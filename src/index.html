@@ -1,192 +1,149 @@
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset=utf-8 />
-  <title>GetLonLat</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <head>
+    <meta charset='utf-8' />
+    <title>GetLonLat</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
 
-  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<link rel="stylesheet" type="text/css" href="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
-  <style>
-    body {margin:0;padding:0;}
-    #map {position: absolute;top:0;bottom:0;right:0;left:0;}
-  #basemaps-wrapper {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 10;
-    background: white;
-    padding: 10px;
-  }
-  #basemaps {
-    margin-bottom: 5px;
-  }
-
-
-
-
-
- #map-center
-        {
-            z-index: 99;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-        }
-
-            #map-center img,
-            #map-center #vertical-rule,
-            #map-center #horizontal-rule
-            {
-                position: absolute;
-                pointer-events: none;
-            }
-
-            #map-center img
-            {
-                top: -8px;
-                left: -8px;
-            }
-
-            #map-center #vertical-rule
-            {
-                border-left: 1px solid rgba(0, 0, 0, .3);
-                height: 420px;
-                top: -210px;
-            }
-
-            #map-center #horizontal-rule
-            {
-                border-top: 1px solid rgba(0, 0, 0, .3);
-                width: 1350px;
-                left: -675px;
-            }
-
-</style>
-</head>
-
-<body>
-<div id="map">
-        <div id="map-center">
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARAQMAAAABo9W5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAZQTFRFAAAA////pdmf3QAAAAJ0Uk5T/wDltzBKAAAAEklEQVQI12P4X9/AgA+DAAE1AEQwH+EzObtuAAAAAElFTkSuQmCC">
-            <div id="vertical-rule"> </div>
-            <div id="horizontal-rule"> </div>
-        </div>
-</div>
-
-<div id="basemaps-wrapper" class="leaflet-bar">
-  <select name="basemaps" id="basemaps">
-    <option value="Topographic">Topographic<options>
-    <option value="Streets">Streets</option>
-    <option value="NationalGeographic">National Geographic<options>
-    <option value="Oceans">Oceans<options>
-    <option value="Gray">Gray<options>
-    <option value="DarkGray">Dark Gray<options>
-    <option value="Imagery">Imagery<options>
-    <option value="ShadedRelief">Shaded Relief<options>
-  </select>
-</div>
-
-  <!-- Load Leaflet from CDN-->
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-
-  <!-- Load Esri Leaflet from CDN -->
-  <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script>
-<script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
-
-<script>
-  var centerMap = [45.189, 5.725];
-  var map = L.map('map').setView(centerMap, 12);
-  var layer = L.esri.basemapLayer('Topographic').addTo(map);
-  var scale = L.control.scale().addTo(map);
-  var layerLabels;
-  var basemaps = document.getElementById('basemaps');
-  var searchControl = new L.esri.Controls.Geosearch().addTo(map);
-  var results = new L.LayerGroup().addTo(map);
-  //var marker = L.marker(centerMap).addTo(map);
-  var popup = L.popup();
-
-  searchControl.on('results', function(data) {
-    results.clearLayers();
-    for (var i = data.results.length - 1; i >= 0; i--) {
-      results.addLayer(L.marker(data.results[i].latlng));
-    }
-  });
-
-map.on('click', onMapClick);
-
-
-  basemaps.addEventListener('change', function(){
-    changeBasemap(basemaps.value);
-  });
-
-  function onMapClick(evt) {
-    var latlon = evt.latlng;
-    var lat = latlon.lat;
-    var lon = latlon.lng;
-    var webmercator = geographicToWebMercator( lon,lat);
-    var dms = convertToDegreMinSec(lon,lat);
-    popup.setLatLng(evt.latlng)
-         .setContent("You clicked the map at <br>" + evt.latlng.toString() + "<br>" +
-                    "webmercator LatLng(" + webmercator.x + "," + webmercator.y +") <br>" +
-                    "DMS LatLng(" + dms.latitude+ "," + dms.longitude +") "
-          )
-         .openOn(map);
-  }
-
-  function changeBasemap(basemap) {
-    if (layer) {
-      map.removeLayer(layer);
-    }
-    layer = L.esri.basemapLayer(basemap);
-    map.addLayer(layer);
-    if (layerLabels) {
-      map.removeLayer(layerLabels);
-    }
-
-    if (basemap === 'ShadedRelief' || basemap === 'Oceans' || basemap === 'Gray' || basemap === 'DarkGray' || basemap === 'Imagery' || basemap === 'Terrain') {
-
-      layerLabels = L.esri.basemapLayer(basemap + 'Labels');
-      map.addLayer(layerLabels);
-    }
-  }
-
-  function geographicToWebMercator(x_lon, y_lat) {
-    var x_mercator, y_mercator ;
-    if( Math.abs(x_lon) <= 180 && Math.abs(y_lat) < 90 ){
-
-        var num = x_lon * 0.017453292519943295;
-        var x = 6378137.0 * num;
-        var a = y_lat * 0.017453292519943295;
-
-        x_mercator = x;
-        y_mercator = 3189068.5 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
-
-    } else {
-        console.error('Invalid coordinate values for conversion');
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css">
+    <link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' rel='stylesheet' />
+    <style>
+      body {margin:0;padding:0;}
+      #map {position: absolute;top:0;bottom:0;right:0;left:0;}
+      #basemaps-wrapper {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        background: white;
+        padding: 10px;
       }
+      #basemaps {
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <div id="basemaps-wrapper" class="leaflet-bar">
+      <select name="basemaps" id="basemaps">
+        <option value="Topographic">Topographic<options>
+        <option value="Streets">Streets</option>
+        <option value="NationalGeographic">National Geographic<options>
+        <option value="Oceans">Oceans<options>
+        <option value="Gray">Gray<options>
+        <option value="DarkGray">Dark Gray<options>
+        <option value="Imagery">Imagery<options>
+        <option value="ShadedRelief">Shaded Relief<options>
+      </select>
+    </div>
+
+    <!-- Load Leaflet from CDN-->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script>
+    <script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js"></script>
+
+
+    <!-- More controls -->
+    <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js'></script>
+
+    <script>
+      var centerMap = [45.189, 5.725];
+      var map = L.map('map').setView(centerMap, 12);
+      var layer = L.esri.basemapLayer('Topographic').addTo(map);
+      var scale = L.control.scale().addTo(map);
+      var layerLabels;
+      var basemaps = document.getElementById('basemaps');
+      var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+      var results = new L.LayerGroup().addTo(map);
+      //var marker = L.marker(centerMap).addTo(map);
+      var popup = L.popup();
+      // Add geolocation control
+      L.control.locate({
+          follow: false,
+          icon: 'icon-location',
+          showPopup: false,
+          locateOptions: {
+          maxZoom: 13
+        }
+      }).addTo(map);
+
+      searchControl.on('results', function(data) {
+        results.clearLayers();
+        for (var i = data.results.length - 1; i >= 0; i--) {
+          results.addLayer(L.marker(data.results[i].latlng));
+        }
+      });
+
+      map.on('click', onMapClick);
+
+
+      basemaps.addEventListener('change', function(){
+        changeBasemap(basemaps.value);
+      });
+
+      function onMapClick(evt) {
+        var latlon = evt.latlng;
+        var lat = latlon.lat;
+        var lon = latlon.lng;
+        var webmercator = geographicToWebMercator( lon,lat);
+        var dms = convertToDegreMinSec(lon,lat);
+        var zoomLevel = map.getZoom();
+        popup.setLatLng(evt.latlng)
+             .setContent("You clicked the map at zoom level "+ zoomLevel +"<br>" + evt.latlng.toString() + "<br>" +
+                         "webmercator LatLng(" + webmercator.x + "," + webmercator.y +") <br>" +
+                         "DMS LatLng(" + dms.latitude+ "," + dms.longitude +") "
+                        ).openOn(map);
+      }
+
+      function changeBasemap(basemap) {
+        if (layer) {
+          map.removeLayer(layer);
+        }
+        layer = L.esri.basemapLayer(basemap);
+        map.addLayer(layer);
+        if (layerLabels) {
+          map.removeLayer(layerLabels);
+        }
+        if (basemap === 'ShadedRelief' || basemap === 'Oceans' || basemap === 'Gray' || basemap === 'DarkGray' || basemap === 'Imagery' || basemap === 'Terrain') {
+          layerLabels = L.esri.basemapLayer(basemap + 'Labels');
+          map.addLayer(layerLabels);
+        }
+      }
+
+      function geographicToWebMercator(x_lon, y_lat) {
+        var x_mercator, y_mercator ;
+        if( Math.abs(x_lon) <= 180 && Math.abs(y_lat) < 90 ){
+          var num = x_lon * 0.017453292519943295;
+          var x = 6378137.0 * num;
+          var a = y_lat * 0.017453292519943295;
+          x_mercator = x;
+          y_mercator = 3189068.5 * Math.log((1.0 + Math.sin(a)) / (1.0 - Math.sin(a)));
+        } else {
+          console.error('Invalid coordinate values for conversion');
+        }
         return {'x': x_mercator, 'y' : y_mercator};
-    }
+      }
 
-    function convertToDegreMinSec(lon, lat) {
-var lonAbs = Math.abs(Math.round(lon * 1000000.));
-var latAbs = Math.abs( Math.round(lat * 1000000.));
- var signlon = 1;
- var signlat = 1;
- if(lon < 0)  { signlon = -1; }
- if(lat < 0)  { signlat = -1; }
+      function convertToDegreMinSec(lon, lat) {
+        var lonAbs = Math.abs(Math.round(lon * 1000000.));
+        var latAbs = Math.abs( Math.round(lat * 1000000.));
+        var signlon = 'E';
+        var signlat = 'N';
+        if(lon < 0)  { signlon = 'W'; }
+        if(lat < 0)  { signlat = 'S'; }
+        if(lonAbs > (180 * 1000000)) { console.error(' Degrees Longitude must be in the range of -180 to 180. '); return ;}
+        if(latAbs > (90 * 1000000)) { console.error(' Degrees Latitude must be in the range of -90. to 90. ');return ;}
+        var latDMS = (signlat+ ' ' + Math.floor(latAbs / 1000000) + '&deg; ' + Math.floor(  ((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60)  + '\' ' +  ( Math.floor(((((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60) - Math.floor(((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60)) * 100000) *60/100000 ) + '&quot;'  );
+        var lonDMS = (signlon + ' ' + Math.floor(lonAbs / 1000000) + '&deg; ' + Math.floor(  ((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60)  + '\' ' +  ( Math.floor(((((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60) - Math.floor(((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60)) * 100000) *60/100000 ) + '&quot;'  );
+        return {'longitude' : lonDMS, 'latitude' : latDMS };
+      }
+    </script>
 
-
-if(lonAbs > (180 * 1000000)) {  console.error(' Degrees Longitude must be in the range of -180 to 180. '); return ;}
-if(latAbs > (90 * 1000000)) { alert(' Degrees Latitude must be in the range of -90. to 90. ');return ;}
-
-var latDMS = ((Math.floor(latAbs / 1000000) * signlat) + '&deg; ' + Math.floor(  ((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60)  + '\' ' +  ( Math.floor(((((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60) - Math.floor(((latAbs/1000000) - Math.floor(latAbs/1000000)) * 60)) * 100000) *60/100000 ) + '&quot;'  );
-var lonDMS = ((Math.floor(lonAbs / 1000000) * signlon) + '&deg; ' + Math.floor(  ((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60)  + '\' ' +  ( Math.floor(((((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60) - Math.floor(((lonAbs/1000000) - Math.floor(lonAbs/1000000)) * 60)) * 100000) *60/100000 ) + '&quot;'  );
-
-return {'longitude' : lonDMS, 'latitude' : latDMS };
-
-
-    }
-</script>
-
-</body>
+  </body>
 </html>
