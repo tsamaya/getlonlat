@@ -4,8 +4,6 @@ var layer = L.esri.basemapLayer('Topographic').addTo(map);
 var scale = L.control.scale().addTo(map);
 var layerLabels;
 var basemaps = document.getElementById('basemaps');
-var searchControl = new L.esri.Controls.Geosearch().addTo(map);
-var results = new L.LayerGroup().addTo(map);
 //var marker = L.marker(centerMap).addTo(map);
 var popup = L.popup();
 // Add geolocation control
@@ -18,6 +16,8 @@ L.control.locate({
     maxZoom: 14
   }
 }).addTo(map);
+var searchControl = new L.esri.Controls.Geosearch().addTo(map);
+var results = new L.LayerGroup().addTo(map);
 
 searchControl.on('results', function(data) {
   results.clearLayers();
@@ -43,7 +43,7 @@ function onMapClick(evt) {
   popup.setLatLng(evt.latlng)
     .setContent('You clicked the map at zoom level ' + zoomLevel + '<br/>' + evt.latlng.toString() + '<br/>' +
       'webmercator LatLng(' + webmercator.x + ',' + webmercator.y + ') <br/>' +
-      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/><a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location='+lat+','+lon+'\'>google street view</a>'
+      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/><a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location='+lat+','+lon+'\' target=\'_blank\'>google street view</a>'
     ).openOn(map);
 }
 
