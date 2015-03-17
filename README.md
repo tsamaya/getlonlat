@@ -3,6 +3,48 @@ GetLonLat
 A web map to help find Longitute and Latitude.
 
 
+lonlat latlon tables from http://www.macwright.org/lonlat/
+
+
+**formats**
+
+| lon, lat  | lat, lon|
+|-----------|---------|
+| GeoJSON   | GeoRSS  |
+| KML       |         |
+| Shapefile |         |
+| WKT       |         |
+| WKB       |         |
+
+ **javascript apis**
+
+| lon, lat  | lat, lon|
+|-----------|---------|
+| OpenLayers | Leaflet |
+| d3 | Google Maps API |
+|ArcGIS API for JavaScript| |
+
+**mobile apis**
+
+| lon, lat  | lat, lon|
+|-----------|---------|
+|  | Google Maps iOS/Android |
+|  | Apple MapKit |
+
+
+**misc**
+
+| lon, lat  | lat, lon|
+|-----------|---------|
+|  | OSRM |
+
+
+
+
+
+
+
+
 ## Issues
 Find a bug or want to request a new feature?  Please let us know by submitting an issue.
 
