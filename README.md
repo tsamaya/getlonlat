@@ -1,10 +1,26 @@
-GetLonLat
-================
+#GetLonLat
+
 A web map to help find Longitute and Latitude.
+Pop up content shows the coordinates as Lon,Lat and Lat,Lon for easily copy/paste for your favorite format.
 
+![App Screenshot](https://raw.githubusercontent.com/tsamaya/getlonlat/master/getlonlat.png)
 
-lonlat latlon tables from http://www.macwright.org/lonlat/
+## Issues
+Find a bug or want to request a new feature?  Please let us know by submitting an [issue](https://github.com/tsamaya/getlonlat/issues).
 
+## Contributing
+Anyone and everyone is welcome to contribute.
+
+## Resources
+* [leaflet](http://leafletjs.com/)
+* [esri leaflet](http://esri.github.io/esri-leaflet)
+* twitter [@arferrand](http://twitter.com/arferrand)
+
+## Credit
+This application was inspired by [Get Lat+Lon](http://teczno.com/squares).
+
+### lonlat latlon
+These tables are coming from http://www.macwright.org/lonlat/
 
 **formats**
 
@@ -18,47 +34,25 @@ lonlat latlon tables from http://www.macwright.org/lonlat/
 
  **javascript apis**
 
-| lon, lat  | lat, lon|
-|-----------|---------|
-| OpenLayers | Leaflet |
-| d3 | Google Maps API |
-|ArcGIS API for JavaScript| |
+| lon, lat   | lat, lon        |
+|------------|-----------------|
+| OpenLayers | Leaflet         |
+| d3         | Google Maps API |
+|ArcGIS API for JavaScript|    |
 
 **mobile apis**
 
 | lon, lat  | lat, lon|
 |-----------|---------|
-|  | Google Maps iOS/Android |
-|  | Apple MapKit |
-
+|           | Google Maps iOS/Android |
+|           | Apple MapKit |
 
 **misc**
 
 | lon, lat  | lat, lon|
 |-----------|---------|
-|  | OSRM |
+|           | OSRM    |
 
-
-
-
-
-
-
-
-## Issues
-Find a bug or want to request a new feature?  Please let us know by submitting an issue.
-
-## Contributing
-Anyone and everyone is welcome to contribute.
-
-## Resources
-* [leaflet](http://leafletjs.com/)
-* [esri leaflet](http://esri.github.io/esri-leaflet)
-* [API ArcGIS for Javascript](http://js.arcgis.com/)
-* twitter [@arferrand](http://twitter.com/arferrand)
-
-## Credit
-This application was inspired by [Get Lat+Lon](http://teczno.com/squares).
 
 ## Licensing
 Licensed under the Apache License, Version 2.0 (the "License");

@@ -42,8 +42,11 @@ function onMapClick(evt) {
   var zoomLevel = map.getZoom();
   popup.setLatLng(evt.latlng)
     .setContent('You clicked the map at zoom level ' + zoomLevel + '<br/>' + evt.latlng.toString() + '<br/>' +
+      'LngLat('+lon.toFixed(5)+','+lat.toFixed(5)+')<br/>' +
       'webmercator LatLng(' + webmercator.x + ',' + webmercator.y + ') <br/>' +
-      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/><a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location='+lat+','+lon+'\' target=\'_blank\'>google street view</a>'
+      'webmercator LngLat(' + webmercator.y + ',' + webmercator.x + ') <br/>' +
+      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/>'+
+      '<a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location='+lat+','+lon+'\' target=\'_blank\'>google street view</a>'
     ).openOn(map);
 }
 
@@ -74,8 +77,8 @@ function geographicToWebMercator(x_lon, y_lat) {
     console.error('Invalid coordinate values for conversion');
   }
   return {
-    'x': x_mercator,
-    'y': y_mercator
+    'x': x_mercator.toFixed(7),
+    'y': y_mercator.toFixed(7)
   };
 }
 
