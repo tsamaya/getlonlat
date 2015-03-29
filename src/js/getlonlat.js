@@ -9,8 +9,8 @@ var popup = L.popup();
 // Add geolocation control
 L.control.locate({
   follow: false,
-  icon: 'fa fa-bullseye',  // class for icon, fa-location-arrow or fa-map-marker
-  iconLoading: 'fa fa-spinner fa-spin',  // class for loading icon
+  icon: 'fa fa-bullseye', // class for icon, fa-location-arrow or fa-map-marker
+  iconLoading: 'fa fa-spinner fa-spin', // class for loading icon
   showPopup: false,
   locateOptions: {
     maxZoom: 14
@@ -42,11 +42,11 @@ function onMapClick(evt) {
   var zoomLevel = map.getZoom();
   popup.setLatLng(evt.latlng)
     .setContent('You clicked the map at zoom level ' + zoomLevel + '<br/>' + evt.latlng.toString() + '<br/>' +
-      'LngLat('+lon.toFixed(5)+','+lat.toFixed(5)+')<br/>' +
+      'LngLat(' + lon.toFixed(5) + ',' + lat.toFixed(5) + ')<br/>' +
       'webmercator LatLng(' + webmercator.x + ',' + webmercator.y + ') <br/>' +
       'webmercator LngLat(' + webmercator.y + ',' + webmercator.x + ') <br/>' +
-      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/>'+
-      '<a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location='+lat+','+lon+'\' target=\'_blank\'>google street view</a>'
+      'DMS LatLng(' + dms.latitude + ',' + dms.longitude + ') <br/>' +
+      '<a href=\'http://maps.googleapis.com/maps/api/streetview?size=600x380&location=' + lat + ',' + lon + '\' target=\'_blank\'>google street view</a>'
     ).openOn(map);
 }
 
@@ -83,8 +83,8 @@ function geographicToWebMercator(x_lon, y_lat) {
 }
 
 function convertToDegreMinSec(lon, lat) {
-  var lonAbs = Math.abs(Math.round(lon * 1000000.));
-  var latAbs = Math.abs(Math.round(lat * 1000000.));
+  var lonAbs = Math.abs(Math.round(lon * 1000000.0));
+  var latAbs = Math.abs(Math.round(lat * 1000000.0));
   var signlon = 'E';
   var signlat = 'N';
   if (lon < 0) {

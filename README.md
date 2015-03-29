@@ -1,6 +1,6 @@
 #GetLonLat
 
-A web map to help find Longitute and Latitude.
+A web map to help finding Longitute and Latitude.
 Pop up content shows the coordinates as Lon,Lat and Lat,Lon for easily copy/paste for your favorite format.
 
 ![App Screenshot](https://raw.githubusercontent.com/tsamaya/getlonlat/master/getlonlat.png)
