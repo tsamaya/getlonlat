@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>GetLonLat</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel='stylesheet' type='text/css' href='//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css' />
+    <link rel='stylesheet' type='text/css' href='//cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.css' />
+    <!--<link rel='stylesheet' type='text/css' href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' />-->
+    <link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css' />
+    <link rel='stylesheet' type='text/css' href='//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.min.css' />
+    <!--[if lt IE 9]>
+        <link rel='stylesheet' href='//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.ie.min.css'/>
+    <![endif]-->
+    <link rel='stylesheet' type='text/css' href='./css/styles.css' />
+  </head>
+
+  <body>
+    <div id='map'></div>
+
+    <div id='basemaps-wrapper' class='leaflet-bar'>
+      <select name='basemaps' id='basemaps'>
+        <option value='Topographic'>Topographic<options>
+        <option value='Streets'>Streets</option>
+        <option value='NationalGeographic'>National Geographic<options>
+        <option value='Oceans'>Oceans<options>
+        <option value='Gray'>Gray<options>
+        <option value='DarkGray'>Dark Gray<options>
+        <option value='Imagery'>Imagery<options>
+        <option value='ShadedRelief'>Shaded Relief<options>
+      </select>
+    </div>
+
+    <!-- Load Leaflet from CDN-->
+    <script src='//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js'></script>
+
+    <!-- Load Esri Leaflet from CDN -->
+    <script src='//cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js'></script>
+    <script src='//cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/0.0.1-beta.5/esri-leaflet-geocoder.js'></script>
+
+    <!-- More controls -->
+    <!--<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js'></script>-->
+    <script src='//rawgithub.com/domoritz/leaflet-locatecontrol/gh-pages/dist/L.Control.Locate.min.js'></script>
+    <script src='./js/getlonlat.js'></script>
+
+  </body>
+</html>
+
